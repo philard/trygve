@@ -9,14 +9,6 @@ repositories {
     jcenter()
 }
 
-// define the main class to start
-mainClassName = "info.fulloo.trygve.editor.Main"
-jar {
-  manifest {
-    attributes 'Main-Class': 'info.fulloo.trygve.editor.Main'
-  }
-}
-
 // enable assertions by default
 applicationDefaultJvmArgs = ["-ea"]
 
@@ -54,6 +46,28 @@ distTar {
 // add antlr to the final distribution
 dependencies {
     compile files('lib/antlr-runtime-4.5.1.jar')
+}
+
+// define the main class to start
+mainClassName = "info.fulloo.trygve.editor.Main"
+jar {
+    manifest {
+        attributes 'Main-Class': 'info.fulloo.trygve.editor.Main'
+    }
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+task runJar (dependsOn:jar) << {
+    javaexec {
+        main = "-jar"
+        args = [
+                "-ea",
+                "build/libs/trygve.jar",
+                "-c",
+                "./tests/andreas4.k",
+                "-r"
+        ]
+    }
 }
 
 // invokes antlr to generate parser

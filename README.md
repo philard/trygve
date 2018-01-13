@@ -1,3 +1,10 @@
+
+To run:
+gradlew runJar
+Or:
+gradlew jar; java -jar -ea build/libs/trygve.jar -c .\tests\andreas4.k -r
+
+
 # trygve
 The trygve language project - Building a DCI-centric language from the ground up
 
